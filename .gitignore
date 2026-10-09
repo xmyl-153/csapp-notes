@@ -1,0 +1,9 @@
+# 编译产物
+labs/datalab-handout/btest
+labs/datalab-handout/fshow
+labs/datalab-handout/ishow
+labs/datalab-handout/dlc
+*.o
+.vscode/
+*.bak
+*.bak-*

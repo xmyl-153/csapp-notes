@@ -1,0 +1,44 @@
+1. Running './dlc -z' to identify coding rules violations.
+
+2. Compiling and running './btest -g' to determine correctness score.
+gcc -O -Wall -m32 -lm -o btest bits.c btest.c decl.c tests.c 
+
+3. Running './dlc -Z' to identify operator count violations.
+
+4. Compiling and running './btest -g -r 2' to determine performance score.
+gcc -O -Wall -m32 -lm -o btest bits.c btest.c decl.c tests.c 
+
+
+5. Running './dlc -e' to get operator count of each function.
+
+Correctness Results	Perf Results
+Points	Rating	Errors	Points	Ops	Puzzle
+1	1	0	2	7	bitXor
+1	1	0	2	1	tmin
+1	1	0	2	8	isTmax
+2	2	0	2	7	allOddBits
+2	2	0	2	2	negate
+3	3	0	2	9	isAsciiDigit
+3	3	0	2	8	conditional
+3	3	0	2	15	isLessOrEqual
+4	4	0	2	6	logicalNeg
+4	4	0	2	40	howManyBits
+4	4	0	2	12	floatScale2
+4	4	0	2	18	floatFloat2Int
+4	4	0	2	9	floatPower2
+
+Score = 62/62 [36/36 Corr + 26/26 Perf] (142 total operators)
+btest.c: In function ‘test_function’:
+btest.c:334:23: warning: ‘arg_test_range’ may be used uninitialized [-Wmaybe-uninitialized]
+  334 |     if (arg_test_range[2] < 1)
+      |         ~~~~~~~~~~~~~~^~~
+btest.c:299:9: note: ‘arg_test_range’ declared here
+  299 |     int arg_test_range[3]; /* test range for each argument */
+      |         ^~~~~~~~~~~~~~
+btest.c: In function ‘test_function’:
+btest.c:334:23: warning: ‘arg_test_range’ may be used uninitialized [-Wmaybe-uninitialized]
+  334 |     if (arg_test_range[2] < 1)
+      |         ~~~~~~~~~~~~~~^~~
+btest.c:299:9: note: ‘arg_test_range’ declared here
+  299 |     int arg_test_range[3]; /* test range for each argument */
+      |         ^~~~~~~~~~~~~~
