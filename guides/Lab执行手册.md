@@ -28,7 +28,7 @@
 
 | 步   | 在哪敲             | 敲什么                                    | 看到什么算对                         |
 | --- | --------------- | -------------------------------------- | ------------------------------ |
-| 1   | 开始菜单 / 任务栏      | 点 **Ubuntu**（不是 VS Code，不是 PowerShell） | 提示符 `csapp@DESKTOP-0JBSR2N:~$` |
+| 1   | 开始菜单 / 任务栏      | 点 **Ubuntu**（不是 VS Code，不是 PowerShell） | 提示符 `csapp@<你的主机名>:~$` |
 | 2   | Ubuntu 终端       | cd ~/csapp/labs/datalab-handout        | 无输出即成功                         |
 | 3   | 同一终端            | code .                                 | VS Code 窗口弹出来                  |
 | 4   | VS Code **左下角** | 看有没有绿色 `WSL: Ubuntu`                   | 有 = 服务器在 Linux 侧，对了            |
@@ -37,7 +37,7 @@
 
 > **为什么先终端后 `code .`？** 因为 `code .` 里的 `.` = "当前目录"。先 `cd` 进 lab 目录再执行，VS Code 才是以这个目录为工作区打开的；直接点 VS Code 图标打开的是空窗口，你还得自己 File → Open Folder 找路径。
 >
-> 已验证（2026-10-07）：这台机器 WSL 里 `code` 解析到 `/mnt/c/Users/20684/AppData/Local/Programs/Microsoft VS Code/bin/code`，`~/.vscode-server/bin/` 下已有 server，中文语言包已装 → **`code .` 现在就能直接用**。
+> 已验证（2026-10-07）：这台机器 WSL 里 `code` 解析到 `/mnt/c/Users/<你的用户名>/AppData/Local/Programs/Microsoft VS Code/bin/code`，`~/.vscode-server/bin/` 下已有 server，中文语言包已装 → **`code .` 现在就能直接用**。
 
 **第二天想省掉 1–3 步：**
 
@@ -115,15 +115,15 @@ make btest && ./btest -f bitXor     # 编译 + 只测这一题
 
 | 提示符长相                        | 你在哪                      | 能敲什么                                   |
 | ---------------------------- | ------------------------ | -------------------------------------- |
-| `PS C:\Users\20684>`         | **Windows PowerShell**   | 只有 Windows 命令（`dir`、`cd C:\...`）       |
-| `csapp@DESKTOP-0JBSR2N:...$` | **Linux（Ubuntu / WSL2）** | 只有 Linux 命令（`uname`、`ls`、`gcc`、`sudo`） |
+| `PS C:\Users\<你的用户名>>`         | **Windows PowerShell**   | 只有 Windows 命令（`dir`、`cd C:\...`）       |
+| `csapp@<你的主机名>:...$` | **Linux（Ubuntu / WSL2）** | 只有 Linux 命令（`uname`、`ls`、`gcc`、`sudo`） |
 
 这两个房间的**同名命令不一样**，这是本项目最贵的坑（详见第四部分）。**VS Code 不在这张表里**：它的窗口在 Windows 显示，但集成终端里敲的是 Linux 命令（提示符 `csapp@...$`）——见第零部分：
 
 | 名字     | Windows 里是什么                                      | Linux 里是什么                  |
 | ------ | ------------------------------------------------- | --------------------------- |
 | `sudo` | `C:\WINDOWS\system32\sudo.exe`（Win11 自带，**默认禁用**） | `/usr/bin/sudo`（真 sudo，要密码） |
-| `~`    | `C:\Users\20684`                                  | `/home/csapp`               |
+| `~`    | `C:\Users\<你的用户名>`                                  | `/home/csapp`               |
 | 路径写法   | `<盘符>:\<你的项目目录>`                                     | `/mnt/<盘符>/<你的项目目录>/...`           |
 
 ## 1.2 三条铁律
@@ -140,7 +140,7 @@ make btest && ./btest -f bitXor     # 编译 + 只测这一题
 | - | -------- | --------------------------------- | ----------------- |
 | 1 | 打开终端     | `Win` → 输 `wt` → 回车               | 开始菜单搜 `Ubuntu` 点开 |
 | 2 | 进入 Linux | 敲 `wsl` → 回车                      | 已经在了              |
-| 3 | **看提示符** | 必须变成 `csapp@DESKTOP-0JBSR2N:...$` | 同左                |
+| 3 | **看提示符** | 必须变成 `csapp@<你的主机名>:...$` | 同左                |
 | 4 | 确认位置     | 敲 `pwd`                           | 同左                |
 
 **第 3 步不能跳。** 没变成 `csapp@` 开头，后面所有命令都会报错。
@@ -148,7 +148,7 @@ make btest && ./btest -f bitXor     # 编译 + 只测这一题
 > **为什么第 4 步要 `pwd`？** 实测：`wsl` 会**继承 PowerShell 当前的目录**并翻译成 `/mnt/...` 形式。
 >
 > ```
-> PowerShell 在 C:\Users\20684          → wsl → /mnt/c/Users/20684
+> PowerShell 在 C:\Users\<你的用户名>          → wsl → /mnt/c/Users/<你的用户名>
 > PowerShell 在 <你的项目目录> → wsl → <你的项目目录>
 > ```
 >
@@ -459,8 +459,8 @@ x | y   ≡   ~(~x & ~y)
 | `tar: Failed to open '/mnt/d/...'`            | 在 **PowerShell** 里写了 Linux 路径                                                        | 先 `wsl` 进 Linux；或在 PowerShell 里写 `D:\...` |
 | `已在此计算机上禁用 Sudo`                              | 打到了 **Windows 自带的 `sudo.exe`**（默认禁用），不是 Linux sudo                                   | **别去开设置里那个开关**（开了也没用）；先 `wsl` 进 Linux     |
 | `uname : 无法将"uname"项识别为...`                   | `uname` 是 Linux 命令，Windows 没有                                                        | 先进 WSL                                    |
-| `cd : 找不到路径"C:\Users\20684\csapp\..."`        | PowerShell 把 `~` 翻成 `C:\Users\20684`；但 `~/csapp` 是 **Linux 家目录** `/home/csapp/csapp` | 先进 WSL 再 `cd ~/csapp`                     |
-| `csapp@DESKTOP-0JBSR2N:~$: command not found` | **把提示符一起复制**进 shell 了                                                                | 只打 `$` 右边的（铁律 2）                          |
+| `cd : 找不到路径"C:\Users\<你的用户名>\csapp\..."`        | PowerShell 把 `~` 翻成 `C:\Users\<你的用户名>`；但 `~/csapp` 是 **Linux 家目录** `/home/csapp/csapp` | 先进 WSL 再 `cd ~/csapp`                     |
+| `csapp@<你的主机名>:~$: command not found` | **把提示符一起复制**进 shell 了                                                                | 只打 `$` 右边的（铁律 2）                          |
 | `Linux: command not found`                    | 把**上一条命令的输出**当命令敲了                                                                   | 只打你该打的，输出是电脑回的                            |
 
 ## 4.2 环境类
@@ -568,7 +568,7 @@ code .
 
 # 第六部分 · 归档到 GitHub（两个仓库）
 
-> 目标：**技术笔记公开、个人计划留本地**。踩坑与实验记录值得给人看；"止损协议""打卡表"这类内容不适合放公网。
+> 目标：**技术笔记公开、个人计划留本地**。踩坑与实验记录值得给人看，计划类文档不适合放公网。
 > 2026-10-09 已按本节搭好并本地提交，只剩 GitHub 网页上的两步（见 6.2）。
 
 ## 6.1 两个仓库的分工
@@ -576,12 +576,12 @@ code .
 | 仓库 | 位置（WSL） | 内容 | 去处 |
 | --- | --- | --- | --- |
 | **csapp-public** | `~/csapp-public` | `ch02/` 笔记、`labs/datalab/`（代码 + 心得 + 分数凭证）、`guides/`（环境与流程） | **推 GitHub** |
-| **csapp-notes** | `~/csapp-notes` | 上面全部 **+**《学习路径规划》《进度打卡表》止损约定《圈点勾画》 | 本地保留 |
+| **csapp-notes** | `~/csapp-notes` | 上面全部 **+** 个人计划类文档 | 本地保留 |
 
 两个仓库各自独立 `git init`；公开版是从完整版**净化后复制**出来的，所以：
 
 - 公开版里的本机路径已替换成 `<你的项目目录>`；
-- 指向《学习路径》进度打卡表止损约定的引用已删净；
+- 指向个人计划类文档的引用已删净；
 - 有自动隐私自检脚本，会扫描私人文档名、本机路径、账号邮箱。
 
 **改动顺序**：先改完整版 → 再重跑净化脚本 → 公开版重新提交。别反过来，否则公开版会漏掉后续修改。
@@ -591,38 +591,40 @@ code .
 **第一步：建仓库**
 
 1. 打开 <https://github.com/new>
-2. Repository name 填 **`csapp-notes`**（想更贴切也可以叫 `csapp-labs`，改名后记得同步改下面的远程地址）
+2. Repository name 填 **`csapp-notes`**
 3. 选 **Public**；**不要**勾 "Add a README file"（本地已有）
 4. 点 **Create repository**
 
-**第二步：把这把 SSH key 加到该仓库的 Deploy keys**
+**第二步：配置 SSH 认证**
 
-1. 仓库页 → **Settings** → 左侧 **Deploy keys** → **Add deploy key**
-2. Title 随便填（例如 `wsl-csapp`）
-3. Key 粘贴下面这一整行：
+先确认本机能通过 GitHub 的 SSH 认证：
 
-```
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOG82/6pBi2vul+TBJJBrmgg9w11yT9cKONlBlK95ZGv 星梦幽灵@DESKTOP-0JBSR2N-Source
+```bash
+ssh -T git@github.com
 ```
 
-4. **务必勾上 `Allow write access`**（不勾就只能拉不能推）
-5. 点 **Add key**
+看到 `Hi <你的用户名>! You've successfully authenticated...` 就说明可以推了。
 
-> 为什么用 Deploy key：你这台机器上已经有一把能通过 GitHub 认证的 ed25519 key
-> （Windows 侧 `C:\Users\20684\.ssh\id_ed25519_source`，已复用进 WSL 的 `~/.ssh/id_ed25519_github`），
-> 但它是一把**部署密钥**，只对 `xingmengyouling-blog` 仓库有效——把它也授权给新仓库是最省事的一条路。
->
-> 另外你这边 SSH 的 22 端口被墙，`~/.ssh/config` 已把 `github.com` 改成走 `ssh.github.com:443`，实测连通。
+- **没有 key** → 生成一把并加到账号：`ssh-keygen -t ed25519 -C "your@email"`，
+  然后把 `~/.ssh/id_ed25519.pub` 的内容粘到 <https://github.com/settings/keys>；
+- **只想授权这一个仓库** → 用 **Deploy key**（仓库 Settings → Deploy keys → Add deploy key），
+  **必须勾上 `Allow write access`**，否则只能拉不能推；
+- **22 端口被墙**（中国大陆常见）→ 在 `~/.ssh/config` 里让 github.com 走 443：
+
+```text
+Host github.com
+    HostName ssh.github.com
+    Port 443
+    User git
+```
 
 **第三步：推送**
 
 ```bash
 cd ~/csapp-public
-git remote add origin git@github.com:xmyl-153/csapp-notes.git
+git remote add origin git@github.com:<你的GitHub用户名>/csapp-notes.git
 git push -u origin main
 ```
-
-> 用户名从 `git config --global user.name` 读到是 `xmyl-153`；若你的 GitHub 用户名不同，把 URL 里的用户名换掉。
 
 ## 6.3 以后每做完一个 lab
 

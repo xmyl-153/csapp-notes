@@ -45,7 +45,7 @@ gcc --version && gdb --version && valgrind --version
 
 ## 3. 接入 VS Code（可选但强烈推荐）
 
-> **状态：✅ 已装（2026-10-07 实测）**。Windows 侧 VS Code 在 `C:\Users\20684\AppData\Local\Programs\Microsoft VS Code\`，WSL 里 `code` 可直接解析到它的 `bin\code`，`~/.vscode-server/` 下已有 server。
+> **状态：✅ 已装（2026-10-07 实测）**。Windows 侧 VS Code 在 `C:\Users\<你的用户名>\AppData\Local\Programs\Microsoft VS Code\`，WSL 里 `code` 可直接解析到它的 `bin\code`，`~/.vscode-server/` 下已有 server。
 > **每天的开工流程见【 Lab执行手册.md 】第零部分**，这里只留一次性接入步骤。
 
 1. Windows 上安装 VS Code；（✅ 已完成）
