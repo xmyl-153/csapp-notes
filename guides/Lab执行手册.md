@@ -575,7 +575,7 @@ code .
 
 | 仓库 | 位置（WSL） | 内容 | 去处 |
 | --- | --- | --- | --- |
-| **csapp-public** | `~/csapp-public` | `ch02/` 笔记、`labs/datalab/`（代码 + 心得 + 分数凭证）、`guides/`（环境与流程） | **推 GitHub** |
+| **csapp-public** | `~/csapp-public` | `notes/`（自己写的笔记）、`labs/datalab/`（代码 + 心得 + 分数凭证）、`guides/`（环境与流程） | **推 GitHub** |
 | **csapp-notes** | `~/csapp-notes` | 上面全部 **+** 个人计划类文档 | 本地保留 |
 
 两个仓库各自独立 `git init`；公开版是从完整版**净化后复制**出来的，所以：
