@@ -626,7 +626,7 @@ mkdir -p ~/csapp-notes/labs/bomblab
 cp <bomblab 的答案/代码> ~/csapp-notes/labs/bomblab/
 cd ~/csapp-notes && git add -A && git commit -m "bomblab: 拆完 6 关"
 
-# ② 净化出公开版（工具在 <你的项目目录>\工具\，已装到 ~/tools/）
+# ② 净化出公开版（脚本在仓库的工具目录，并已装到 ~/tools/）
 python3 ~/tools/01-抽出公开版.py     # 抽内容（自动保留 .git 历史）
 python3 ~/tools/02-净化公开版.py     # 换占位符 + 隐私复检，不干净就拒绝继续
 python3 ~/tools/03-提交并推送.py     # 两个仓库提交 + 推送
