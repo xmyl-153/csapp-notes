@@ -1,7 +1,7 @@
 # CSAPP Lab 执行手册
 
 > **定位**：从「按下电源」到「lab 跑通」的固定流程。datalab 是第一个实例；**第零、二、三、六部分对后面 5 个 lab 直接复用**。  
-> **入口**：每天第一件事 → 第零部分（VS Code + WSL 四步开机）｜环境搭建 →《WSL2环境搭建指南.md》｜Lab 包说明 →【 labs/README.md 】  
+> **入口**：每天第一件事 → 第零部分（VS Code + WSL 四步开机）｜环境搭建 →《WSL2环境搭建指南.md》｜Lab 包说明 →《Lab/README.md》  
 > **可信度**：本手册所有命令与输出，均为 **2026-10-06 / 10-07 在你这台机器上实测**（Ubuntu 26.04.1 LTS / GCC 15.2.0 / WSL 2.7.12.0 / WSL 内核 6.18.33.2；10-07 补测 VS Code + WSL 接入）。凡标注「实测」的数字都不是抄来的。
 
 ---
@@ -265,18 +265,18 @@ nano -l +145 bits.c
 ## 2.4 收工动作（每天结束前 2 分钟）
 
 ```bash
-# 1. 把成果拷进笔记仓库
+# 1. 把成果拷进仓库目录
 mkdir -p ~/csapp/notes/labs/datalab
 cp ~/csapp/labs/datalab-handout/bits.c ~/csapp/notes/labs/datalab/
 
-# 2. 在仓库里写心得（这就是进度表里"笔记推送 GitHub"那项）
+# 2. 在仓库里写心得
 nano ~/csapp/notes/labs/datalab/README.md
 
 # 3. 退出 Linux
 exit
 ```
 
-> **当前状态**：本仓库已建立并推送；`~/csapp/notes/` 是归档暂存目录（在 WSL 内，不会丢）。
+> **当前状态提醒**：启动期第 2 项"GitHub 建 `csapp-notes` 仓库"和《WSL2环境搭建指南》§5"git 初始配置"**都还没做** —— 实测 `git config --global --list` 为空、`~/.ssh` 不存在。归档这步要么先补这两项，要么暂时只拷到 `~/csapp/notes/`（在 WSL 里，不会丢）。
 
 ---
 
@@ -556,13 +556,13 @@ code .
 - 写 `tsh.c` 实现 tiny shell。
 - 官方测试：`make test01` … `make test16`（每个 trace 一个目标）。
 - 也可以手动：`./sdriver.pl -t trace01.txt -s ./tsh -a "-p"`，跟参考实现 `tshref` 的输出比。
-- 信号处理是重头（`SIGINT`/`SIGTSTP`/`SIGCHLD`），务必看清自测验收清单里那一条。
+- 信号处理是重头（`SIGINT`/`SIGTSTP`/`SIGCHLD`），务必把自测验收清单逐条走一遍。
 
 ### malloclab（Ch9，W13–W14）
 
 - 写 `mm.c` 实现 `malloc`/`free`/`realloc`。
 - 官方测试：`./mdriver -V`（`-V` 打印详细统计）。
-- **评分是双指标**：吞吐率 × 峰值利用率。别只追一个 —— 这个权衡正是《学习路径》里"用 Ch9 理论复盘我的内存池"要写的东西。
+- **评分是双指标**：吞吐率 × 峰值利用率。别只追一个 —— 这个权衡正是「用 Ch9 理论复盘我的内存池」那篇复盘要写的东西。
 
 ---
 
@@ -597,26 +597,17 @@ code .
 
 **第二步：配置 SSH 认证**
 
-先确认本机能通过 GitHub 的 SSH 认证：
-
 ```bash
 ssh -T git@github.com
 ```
 
 看到 `Hi <你的用户名>! You've successfully authenticated...` 就说明可以推了。
 
-- **没有 key** → 生成一把并加到账号：`ssh-keygen -t ed25519 -C "your@email"`，
-  然后把 `~/.ssh/id_ed25519.pub` 的内容粘到 <https://github.com/settings/keys>；
-- **只想授权这一个仓库** → 用 **Deploy key**（仓库 Settings → Deploy keys → Add deploy key），
+- **没有 key** → `ssh-keygen -t ed25519 -C "your@email"`，把 `~/.ssh/id_ed25519.pub` 的内容
+  粘到 <https://github.com/settings/keys>；
+- **只想授权这一个仓库** → 用仓库的 **Deploy key**（Settings → Deploy keys），
   **必须勾上 `Allow write access`**，否则只能拉不能推；
-- **22 端口被墙**（中国大陆常见）→ 在 `~/.ssh/config` 里让 github.com 走 443：
-
-```text
-Host github.com
-    HostName ssh.github.com
-    Port 443
-    User git
-```
+- **22 端口被墙** → 在 `~/.ssh/config` 让 github.com 走 443：`HostName ssh.github.com` / `Port 443`。
 
 **第三步：推送**
 
@@ -626,6 +617,7 @@ git remote add origin git@github.com:<你的GitHub用户名>/csapp-notes.git
 git push -u origin main
 ```
 
+
 ## 6.3 以后每做完一个 lab
 
 ```bash
@@ -634,10 +626,13 @@ mkdir -p ~/csapp-notes/labs/bomblab
 cp <bomblab 的答案/代码> ~/csapp-notes/labs/bomblab/
 cd ~/csapp-notes && git add -A && git commit -m "bomblab: 拆完 6 关"
 
-# ② 净化出公开版
-python3 <你的项目目录>/未命名/_build_public.py
-python3 <你的项目目录>/未命名/_scrub_public.py
-python3 <你的项目目录>/未命名/_finalize_public.py
+# ② 净化出公开版（工具在 <你的项目目录>\工具\，已装到 ~/tools/）
+python3 ~/tools/01-抽出公开版.py     # 抽内容（自动保留 .git 历史）
+python3 ~/tools/02-净化公开版.py     # 换占位符 + 隐私复检，不干净就拒绝继续
+python3 ~/tools/03-提交并推送.py     # 两个仓库提交 + 推送
+
+# 也可以一条命令走完（等价于上面三步，任一步失败就停）
+python3 ~/tools/归档到GitHub.py "bomblab: 拆完 6 关"
 
 # ③ 推公开版
 cd ~/csapp-public && git push
